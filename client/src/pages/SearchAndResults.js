@@ -1,14 +1,16 @@
-import React, { Component } from "react";
+import React, {Component} from "react";
 import SearchForm from '../components/SearchForm/SearchForm';
-import Results from '../components/Results/Results';
-import ListItem from '../components/Results/ListItem';
+import List from '../components/List/List';
+import ListItem from '../components/List/ListItem';
 import API from "../utils/API";
+
+
 
 class SearchAndResults extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      result: [],
+      results: [],
       topic: "",
       syear: "",
       eyear: ""
@@ -17,13 +19,13 @@ class SearchAndResults extends Component {
 
   searchArticles = query => {
     API.search(query)
-      .then(res => this.setState({ result: res.data }))
+      .then(res => this.setState({results: res.data.response.docs}))
       .catch(err => console.log(err));
     console.log("query: " + query);
   };
 
   handleInputChange = event => {
-    const { name, value } = event.target;
+    const {name, value} = event.target;
     this.setState({
       [name]: value
     });
@@ -35,6 +37,16 @@ class SearchAndResults extends Component {
     this.searchArticles(this.state.topic + "&begin_date=" + this.state.syear + "0101&end_date=" + this.state.eyear + "0101");
   };
 
+  handleClick = (title, url, datepub) => {
+    API.saveArticle({
+      title: title,
+      url: url,
+      datepub: datepub
+    })
+      .then(res => this.loadBooks())
+      .catch(err => console.log(err));
+  }
+
   render() {
     return (
       [
@@ -45,17 +57,23 @@ class SearchAndResults extends Component {
           handleInputChange={this.handleInputChange}
           handleFormSubmit={this.handleFormSubmit}
         />,
-        <Results>
+        <List>
           {this.state.results.map(article => (
             <ListItem key={article._id}>
-              <h1>{article.headline.main}</h1>
-              <p>Date Published: {article.pub_date}</p>
-              <button><a href={"/articles/" + article._id}>Save</a></button>
-              <button><a href={article.web_url}>View Article</a></button>
+              <div className="headlines">
+                <h4>{article.headline.main}</h4>
+                <p>Date Published: {article.pub_date}</p>
+              </div>
+              <div className="buttons">
+                <button className="btn"
+                        onClick={() => this.handleClick(article.headline.main, article.web_url, article.pub_date)}>Save
+                </button>
+                <button className="btn"><a href={article.web_url}>View Article</a></button>
+              </div>
             </ListItem>
           ))}
-        </Results>
-        ]
+        </List>
+      ]
     )
   }
 }

@@ -1,8 +1,9 @@
 import React from 'react';
+import './List.css'
 
-const Results = ({ children }) => {
+const List = ({ children }) => {
   return (
-    <div className="list-overflow-container">
+    <div className="list-container">
       <ul className="list-group">
         {children}
       </ul>
@@ -10,4 +11,4 @@ const Results = ({ children }) => {
   );
 };
 
-export default Results;
+export default List;

@@ -1,7 +1,7 @@
 import React from 'react';
 import "./Footer.css";
 
-const Header = () => (
+const Footer = () => (
   <div className="footer">
     <p>Proudly built using React.js</p>
   </div>
