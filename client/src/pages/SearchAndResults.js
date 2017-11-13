@@ -7,17 +7,17 @@ class SearchAndResults extends Component {
     super(props);
     this.state = {
       result: {},
-      search: ""
+      topic: "",
+      syear: "",
+      eyear: ""
     }
-    this.handleInputChange = this.handleInputChange.bind(this);
-    this.handleFormSubmit = this.handleFormSubmit.bind(this);
   }
 
   searchArticles = query => {
     API.search(query)
       .then(res => this.setState({ result: res.data }))
       .catch(err => console.log(err));
-    console.log(this.state.result);
+    console.log("query: " + query);
   };
 
   handleInputChange = event => {
@@ -25,17 +25,20 @@ class SearchAndResults extends Component {
     this.setState({
       [name]: value
     });
+    console.log("state: " + this.state.eyear);
   };
 
   handleFormSubmit = event => {
     event.preventDefault();
-    this.searchArticles(this.state.search);
+    this.searchArticles(this.state.topic + "&begin_date=" + this.state.syear + "0101&end_date=" + this.state.eyear + "0101");
   };
 
   render() {
     return (
         <SearchForm
-          value={this.state.search}
+          value1={this.state.topic}
+          value2={this.state.syear}
+          value3={this.state.eyear}
           handleInputChange={this.handleInputChange}
           handleFormSubmit={this.handleFormSubmit}
         />
@@ -44,17 +47,3 @@ class SearchAndResults extends Component {
 }
 
 export default SearchAndResults;
-
-
-// // Start Year
-// startYear = $("#start-year").val().trim();
-// // End Year
-// endYear = $("#end-year").val().trim();
-// // If the user provides a startYear -- the startYear will be included in the queryURL
-// if (parseInt(startYear)) {
-//   queryURL = queryURL + "&begin_date=" + startYear + "0101";
-// }
-// // If the user provides a startYear -- the endYear will be included in the queryURL
-// if (parseInt(endYear)) {
-//   queryURL = queryURL + "&end_date=" + endYear + "0101";
-// }

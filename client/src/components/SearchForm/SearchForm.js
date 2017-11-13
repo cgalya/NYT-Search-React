@@ -8,12 +8,30 @@ const SearchForm = props => (
       <div className="form-group">
         <label>Topic</label>
         <input
-          value={props.value}
+          value={props.value1}
           onChange={props.handleInputChange}
           name="topic"
           type="text"
           className="form-control"
           id="topic"
+        />
+        <label>Start Year</label>
+        <input
+          value={props.value2}
+          onChange={props.handleInputChange}
+          name="syear"
+          type="text"
+          className="form-control"
+          id="syear"
+        />
+        <label>End Year</label>
+        <input
+          value={props.value3}
+          onChange={props.handleInputChange}
+          name="eyear"
+          type="text"
+          className="form-control"
+          id="eyear"
         />
         <button
           type="submit"
