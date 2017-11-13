@@ -1,12 +1,14 @@
 import React, { Component } from "react";
-import SearchForm from '../components/SearchForm/SearchForm'
+import SearchForm from '../components/SearchForm/SearchForm';
+import Results from '../components/Results/Results';
+import ListItem from '../components/Results/ListItem';
 import API from "../utils/API";
 
 class SearchAndResults extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      result: {},
+      result: [],
       topic: "",
       syear: "",
       eyear: ""
@@ -35,13 +37,25 @@ class SearchAndResults extends Component {
 
   render() {
     return (
+      [
         <SearchForm
           value1={this.state.topic}
           value2={this.state.syear}
           value3={this.state.eyear}
           handleInputChange={this.handleInputChange}
           handleFormSubmit={this.handleFormSubmit}
-        />
+        />,
+        <Results>
+          {this.state.results.map(article => (
+            <ListItem key={article._id}>
+              <h1>{article.headline.main}</h1>
+              <p>Date Published: {article.pub_date}</p>
+              <button><a href={"/articles/" + article._id}>Save</a></button>
+              <button><a href={article.web_url}>View Article</a></button>
+            </ListItem>
+          ))}
+        </Results>
+        ]
     )
   }
 }
